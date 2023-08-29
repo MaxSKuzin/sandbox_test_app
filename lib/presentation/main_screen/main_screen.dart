@@ -21,7 +21,6 @@ class _MainScreenState extends State<MainScreen> {
   final _amountFromController = TextEditingController();
   final _amountToController = TextEditingController();
   final _convertBloc = getIt.get<CurrencyConvertCubit>();
-  String? _oldAmout;
 
   @override
   void initState() {
@@ -150,10 +149,6 @@ class _MainScreenState extends State<MainScreen> {
     if (_currencyFrom.value == null || _currencyTo.value == null || amount == null) {
       return;
     }
-    if (_oldAmout == _amountFromController.text) {
-      return;
-    }
-    _oldAmout = _amountFromController.text;
     EasyDebounce.debounce(
       'convert-debouncer',
       const Duration(milliseconds: 300),

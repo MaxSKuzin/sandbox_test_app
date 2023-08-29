@@ -23,25 +23,26 @@ class NetworkCacheUtil {
   );
 
   Future<dynamic> get(String path, [Map<String, dynamic>? queryParameters]) async {
-    if (_connectionStatusStream.value) {
+    final hasInternetConnection = _connectionStatusStream.value;
+    if (hasInternetConnection) {
       return _fetchData(path, queryParameters);
     } else {
-      Future(
-        () async {
-          if (!_lock.locked) {
-            await _lock.synchronized(
-              () => _connectionStatusStream.firstWhere(
-                (hasConnection) => hasConnection,
-              ),
-            );
-          } else {
-            await _lock.synchronized(() {});
-          }
-          await _fetchNetworkData(path, queryParameters);
-        },
-      );
+      _addToPollingQueu(path, queryParameters);
       return _getLocalData(path, queryParameters);
     }
+  }
+
+  Future<void> _addToPollingQueu(String path, Map<String, dynamic>? queryParameters) async {
+    if (!_lock.locked) {
+      await _lock.synchronized(
+        () => _connectionStatusStream.firstWhere(
+          (hasConnection) => hasConnection,
+        ),
+      );
+    } else {
+      await _lock.synchronized(() {});
+    }
+    await _fetchNetworkData(path, queryParameters);
   }
 
   String _getCachePath(String path, Map<String, dynamic>? queryParameters) {

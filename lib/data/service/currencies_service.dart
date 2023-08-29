@@ -14,7 +14,7 @@ class CurrenciesService {
 
   String _getSymbolsRoute() => '/symbols';
 
-  // currencyapi does not allow converting
+  // exchangeratesapi does not allow converting
   String _getConvertRoute() => 'https://api.api-ninjas.com/v1/convertcurrency';
 
   final NetworkCacheUtil _cacheUtil;
@@ -44,15 +44,14 @@ class CurrenciesService {
       want: to,
       amount: amount,
     );
-    final response = await _cacheUtil.get(
-      _getConvertRoute(),
-      {
-        // 'apikey': Env.apiKey,
-        ...request.toJson(),
-      },
-    ).then(
-      (value) => CurrencyConvertResponseDto.fromJson(value),
-    );
+    final response = await _cacheUtil
+        .get(
+          _getConvertRoute(),
+          request.toJson(),
+        )
+        .then(
+          (value) => CurrencyConvertResponseDto.fromJson(value),
+        );
     return response.toDomain(to);
   }
 }

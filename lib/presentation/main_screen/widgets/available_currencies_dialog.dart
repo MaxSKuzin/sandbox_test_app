@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:math' as math;
 
-
 import '../../../domain/cubits/available_currencies_cubit/available_currencies_cubit.dart';
 import '../../../domain/models/currency_symbol/currency_symbol.dart';
 
@@ -45,9 +44,9 @@ class _AvailableCurrenciesDialogState extends State<AvailableCurrenciesDialog> {
                       fontWeight: FontWeight.w700,
                     ),
               ),
-              state.when(
-                ready: (currencies) => Expanded(
-                  child: ValueListenableBuilder<CurrencySymbol?>(
+              Expanded(
+                child: state.when(
+                  ready: (currencies) => ValueListenableBuilder<CurrencySymbol?>(
                     valueListenable: _selectedCurrency,
                     builder: (context, value, child) => ListView.builder(
                       itemCount: currencies.length,
@@ -76,18 +75,18 @@ class _AvailableCurrenciesDialogState extends State<AvailableCurrenciesDialog> {
                       },
                     ),
                   ),
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  error: () => Text(
+                    'An error occured, try again later',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.error,
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                  initial: () => const SizedBox(),
                 ),
-                loading: () => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                error: () => Text(
-                  'An error occured, try again later',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.error,
-                        fontWeight: FontWeight.w700,
-                      ),
-                ),
-                initial: () => const SizedBox(),
               ),
               const Divider(),
             ],

@@ -13,6 +13,8 @@ part 'currency_convert_cubit.freezed.dart';
 class CurrencyConvertCubit extends Cubit<CurrencyConvertState> {
   final CurrenciesRepository _currenciesRepository;
 
+  ({String from, String to, double amount})? _lastRequest;
+
   CurrencyConvertCubit(
     this._currenciesRepository,
   ) : super(const CurrencyConvertState.initial());
@@ -23,6 +25,10 @@ class CurrencyConvertCubit extends Cubit<CurrencyConvertState> {
     required double amount,
   }) async {
     try {
+      if (_lastRequest == (from: from, to: to, amount: amount)) {
+        return;
+      }
+      _lastRequest = (from: from, to: to, amount: amount);
       emit(const CurrencyConvertState.loading());
       final response = await _currenciesRepository.convertCurrency(
         from: from,
