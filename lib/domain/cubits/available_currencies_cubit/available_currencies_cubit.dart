@@ -1,4 +1,5 @@
-import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:test_app/logger.dart';
@@ -23,7 +24,15 @@ class AvailableCurrenciesCubit extends Cubit<AvailableCurrenciesState> {
         emit(const AvailableCurrenciesState.loading());
       }
       final currencies = await _currenciesRepository.getCurrencies();
-      emit(AvailableCurrenciesState.ready(currencies));
+      emit(
+        AvailableCurrenciesState.ready(
+          currencies.sorted(
+            (a, b) => a.code.compareTo(
+              b.code,
+            ),
+          ),
+        ),
+      );
     } catch (err, st) {
       emit(const AvailableCurrenciesState.error());
       logger.e(
