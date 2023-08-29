@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'data/util/network_cache_util.dart';
+import 'data/service/currencies_service.dart';
 import 'injection.dart';
 
 void main() async {
@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final int _counter = 0;
 
   Future<void> _incrementCounter() async {
-    final data = await getIt.get<NetworkCacheUtil>().get('https://jsonplaceholder.typicode.com/todos/1');
+    final data = await getIt.get<CurrenciesService>().getAvailableCurrencies();
     print(data);
   }
 

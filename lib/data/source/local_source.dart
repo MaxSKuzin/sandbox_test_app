@@ -1,5 +1,5 @@
-abstract class LocalSource {
-  Future<T?> get<T>(String path);
+abstract interface class LocalSource {
+  Future<dynamic> get(String path);
 
   Future<void> put(
     String path,
