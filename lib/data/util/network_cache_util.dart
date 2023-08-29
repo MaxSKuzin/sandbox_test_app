@@ -46,7 +46,7 @@ class NetworkCacheUtil {
 
   String _getCachePath(String path, Map<String, dynamic>? queryParameters) {
     final parameters = queryParameters?.entries.map((entry) => '${entry.key}:${entry.value}');
-    return '$path${parameters != null ? '?/parameters' : ''}';
+    return '$path${parameters != null ? '?/$parameters' : ''}';
   }
 
   Future<dynamic> _fetchData(String path, Map<String, dynamic>? queryParameters) async {
