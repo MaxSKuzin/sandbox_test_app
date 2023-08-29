@@ -19,7 +19,9 @@ class AvailableCurrenciesCubit extends Cubit<AvailableCurrenciesState> {
 
   Future<void> loadCurrencies() async {
     try {
-      emit(const AvailableCurrenciesState.loading());
+      if (state is! _Ready) {
+        emit(const AvailableCurrenciesState.loading());
+      }
       final currencies = await _currenciesRepository.getCurrencies();
       emit(AvailableCurrenciesState.ready(currencies));
     } catch (err, st) {
