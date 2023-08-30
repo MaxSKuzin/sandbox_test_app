@@ -14,7 +14,7 @@ class DioSource implements RemoteSource {
     final dio = Dio(
       BaseOptions(
         connectTimeout: const Duration(
-          seconds: 2,
+          seconds: 40,
         ),
       ),
     );
